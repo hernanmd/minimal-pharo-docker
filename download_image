@@ -1,0 +1,13 @@
+#!/bin/bash
+
+printf "Downloading Pharo image and sources...\n"
+
+wget https://files.pharo.org/image/stable/latest-minimal-64.zip
+unzip latest-minimal-64.zip
+[ -f latest-minimal-64.zip ] && rm -f latest-minimal-64.zip
+
+wget http://files.pharo.org/sources/PharoV60.sources.zip
+unzip PharoV60.sources.zip
+[ -f PharoV60.sources.zip ] && rm -f PharoV60.sources.zip
+
+printf "\n\nDone. Now you can run Dockerfile generate ./dfg Pharo-Image PharoV60.sources\n(DO NOT ADD .image or .changes to Pharo-Image)\n"

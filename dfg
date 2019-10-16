@@ -1,0 +1,20 @@
+#!/bin/bash
+
+pharofile="$1"
+sourcesfile="$2"
+
+echo "FROM pierceng/pharovm-alpine:1ea727f
+WORKDIR /pkg/image
+COPY $pharofile.image pharo.image
+COPY $pharofile.changes pharo.changes
+COPY $sourcesfile $sourcesfile
+RUN addgroup -g 1099 pharoapp \
+  && adduser -D -u 1099 -G pharoapp -h /home/pharoapp pharoapp \
+  && chown -R pharoapp:pharoapp /pkg/image \
+  && chown root:root /pkg/image/$sourcesfile
+USER pharoapp:pharoapp
+ENV LD_LIBRARY_PATH /pkg/vm
+ENTRYPOINT ['/pkg/vm/pharo', '-headless', 'pharo.image']
+VOLUME /pkg/image" > Dockerfile
+
+[ -f Dockerfile ] && printf "\nDockerfile generated\n"
